@@ -14,3 +14,9 @@
         * Host Key Verification Strategy: Manually trusted key Verification Strategy
         * Advanced: JavaPath = /bin/java
     * Save
+
+#### Agent server configuration
+Agent server can be configured using `configure_agent.yaml` ansible playbook:
+```
+ansible-playbook configure_agent.yaml 
+```

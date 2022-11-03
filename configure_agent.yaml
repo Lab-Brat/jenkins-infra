@@ -1,0 +1,25 @@
+---
+- hosts: agents
+  become: yes
+
+  tasks:
+    - name: Install Java.
+      dnf:
+        name: java
+        state: present
+
+    - name: Create jenkins user.
+      user:
+        name: jenkins
+        shell: /bin/bash
+        home: /var/lib/jenkins
+
+    - name: Create .ssh directory for jenkins user.
+      file:
+        path: /var/lib/jenkins/.ssh
+        state: directory
+
+    - name: Create authorized_keys file.
+      copy:
+        src: vagrant/vg_box.pub
+        dest: /var/lib/jenkins/.ssh/authorized_keys

@@ -3,9 +3,11 @@
   become: yes
 
   tasks:
-    - name: Install Java.
+    - name: Install Java and git.
       dnf:
-        name: java
+        name:
+          - java
+          - git
         state: present
 
     - name: Create jenkins user.
@@ -23,3 +25,25 @@
       copy:
         src: vagrant/vg_box.pub
         dest: /var/lib/jenkins/.ssh/authorized_keys
+
+    - name: Check if Docker repository is enabled.
+      shell: 'dnf repolist enabled | grep -o docker-ce-stable'
+      register: repo_enabled
+
+    - name: Install Docker repository.
+      shell: >
+        dnf config-manager --add-repo 
+        https://download.docker.com/linux/centos/docker-ce.repo
+      when: repo_enabled.stdout != 'docker-ce-stable'
+
+    - name: Install docker
+      dnf:
+        name:
+          - docker-ce 
+          - docker-ce-cli 
+          - containerd.io 
+          - docker-compose-plugin
+        state: present
+
+    - name: Start Docker
+      service: name='docker' state=started enabled=yes

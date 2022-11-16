@@ -1,0 +1,8 @@
+node {
+    checkout scm
+    def testImage = docker.build("python-app", "./dockerfiles/agent_python") 
+
+    testImage.inside {
+        sh 'python3 --version'
+    }
+}

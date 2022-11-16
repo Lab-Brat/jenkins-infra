@@ -1,0 +1,19 @@
+pipeline{
+    agent {
+        docker {image 'node'}
+    }
+
+    stages {
+        stage('Print OS Version') {
+            steps {
+                sh 'cat /etc/os-release'
+            }
+        }
+        
+        stage('Print node version') {
+            steps {
+                sh 'node --version'
+            }
+        }
+    }
+}
